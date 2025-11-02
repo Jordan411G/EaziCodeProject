@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewGen Advisory - Career Aptitude & Personality Assessment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress">
+        <div class="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Welcome Message -->
+    <div id="welcomeMessage" class="welcome-message" style="display: none;"></div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+    </button>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="auth-forms">
+                <div class="auth-form active" id="loginForm">
+                    <h2>Welcome Back</h2>
+                    <form id="login">
+                        <input type="email" placeholder="Email" required aria-label="Email address">
+                        <input type="password" placeholder="Password" required aria-label="Password">
+                        <button type="submit" class="btn">Sign In</button>
+                    </form>
+                    <p>Don't have an account? <a href="#" class="switch-form" data-form="signup">Sign Up</a></p>
+                </div>
+                <div class="auth-form" id="signupForm">
+                    <h2>Join NewGen Advisory</h2>
+                    <form id="signup">
+                        <input type="text" placeholder="Full Name" required aria-label="Full name">
+                        <input type="email" placeholder="Email" required aria-label="Email address">
+                        <input type="password" placeholder="Password" required aria-label="Password">
+                        <button type="submit" class="btn">Create Account</button>
+                    </form>
+                    <p>Already have an account? <a href="#" class="switch-form" data-form="login">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">NewGen<span>Advisory</span></a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#careers">Careers</a></li>
+                    <li id="authButtons">
+                        <a href="#" class="btn" id="signInBtn">Sign In</a>
+                    </li>
+                    <li id="userMenu" style="display: none;">
+                        <span id="userGreeting"></span>
+                        <a href="#dashboard" class="btn" id="dashboardBtn">Dashboard</a>
+                        <a href="#" class="btn btn-outline" id="signOutBtn">Sign Out</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Discover Your Perfect Career Match</h1>
+                    <p>Take our comprehensive personality and aptitude assessment to find careers that truly fit who you are.</p>
+                    <div class="hero-btns">
+                        <a href="#quiz" class="btn" id="takeTestBtn">Take the Career Test</a>
+                        <a href="#features" class="btn btn-outline">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section class="section" id="quiz">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Career Aptitude & Personality Assessment</h2>
+                    <p>Answer these questions to discover careers that match your personality and skills</p>
+                </div>
+                
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <span id="progressText">Question 1 of 30</span>
+                    </div>
+                    
+                    <div class="quiz-content">
+                        <div class="question-container">
+                            <div class="question-header">
+                                <h3 id="questionText"></h3>
+                                <div class="question-tooltip" id="questionTooltip"></div>
+                            </div>
+                            <div class="options-container" id="optionsContainer"></div>
+                        </div>
+                        
+                        <div class="quiz-navigation">
+                            <button class="btn btn-outline" id="prevBtn" disabled>Previous</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="section results-section" id="results" style="display: none;">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Your Career Matches</h2>
+                    <p>Based on your personality and aptitude assessment</p>
+                </div>
+                
+                <!-- Motivational Quote -->
+                <div class="motivational-quote" id="motivationalQuote">
+                    <p class="quote-text"></p>
+                    <p class="quote-author"></p>
+                </div>
+                
+                <div class="results-container">
+                    <article class="career-results">
+                        <h3>Career Compatibility Results</h3>
+                        <div id="careerProgressBars"></div>
+                    </article>
+                    
+                    <aside class="results-details">
+                        <h3>Top Career Recommendations</h3>
+                        <div id="careerDetails"></div>
+                    </aside>
+                </div>
+
+                <!-- Career Timeline -->
+                <div class="career-timeline" id="careerTimeline">
+                    <h3>Your 5-Year Career Journey</h3>
+                    <div class="timeline-container" id="timelineContainer"></div>
+                </div>
+                
+                <div class="results-actions">
+                    <button class="btn" id="saveResultsBtn">Save Results</button>
+                    <button class="btn btn-outline" id="retakeTestBtn">Retake Test</button>
+                    <button class="btn btn-outline" id="downloadReportBtn">Download PDF Report</button>
+                    <button class="btn btn-outline" id="shareResultsBtn">Share Results</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>How We Help You Succeed</h2>
+                    <p>Our comprehensive platform guides you toward a fulfilling career</p>
+                </div>
+                <div class="career-pathways">
+                    <article class="pathway-item">
+                        <h3>Personality Assessment</h3>
+                        <p>Discover your unique personality traits and how they align with different career environments and work styles.</p>
+                    </article>
+                    <article class="pathway-item">
+                        <h3>Aptitude Analysis</h3>
+                        <p>Identify your natural strengths, skills, and academic preferences to find careers where you'll excel.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section class="section dashboard-section" id="dashboard" style="display: none;">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Your Career Dashboard</h2>
+                    <p>Welcome back, <span id="dashboardUserName"></span> 👋</p>
+                </div>
+                
+                <div class="dashboard-content">
+                    <article class="dashboard-card">
+                        <h3>Recent Results</h3>
+                        <div id="recentResults"></div>
+                    </article>
+                    
+                    <article class="dashboard-card">
+                        <h3>Saved Careers</h3>
+                        <div id="savedCareers"></div>
+                    </article>
+                    
+                    <article class="dashboard-card">
+                        <h3>Career Progress</h3>
+                        <div id="careerProgress"></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Career Paths Section -->
+        <section class="section" id="careers">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Explore Career Paths</h2>
+                    <p>Discover various career options across different industries</p>
+                </div>
+
+                <!-- Career Navigation will be inserted here by JavaScript -->
+
+                <!-- Career Filters -->
+                <div class="career-filters">
+                    <h4>Filter Careers</h4>
+                    <div class="filter-options">
+                        <button class="filter-btn active" data-filter="all">All Careers</button>
+                        <button class="filter-btn" data-filter="technology">Technology</button>
+                        <button class="filter-btn" data-filter="healthcare">Healthcare</button>
+                        <button class="filter-btn" data-filter="business">Business</button>
+                        <button class="filter-btn" data-filter="creative">Creative</button>
+                        <button class="filter-btn" data-filter="education">Education</button>
+                        <button class="filter-btn" data-filter="engineering">Engineering</button>
+                    </div>
+                </div>
+
+                <!-- Career Paths Container -->
+                <div class="career-paths" id="careerPathsContainer">
+                    <!-- Technology Careers -->
+                    <div class="path-card" data-category="technology">
+                        <div class="path-image" style="background-color: #4cc9f0;">
+                            💻 Technology
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Software Developer</h3>
+                            </div>
+                            <p>Create applications and systems that power our digital world</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Programming, Problem Solving, Algorithms
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $110,000</span>
+                                    <span class="growth">📈 22% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="technology">
+                        <div class="path-image" style="background-color: #4cc9f0;">
+                            💻 Technology
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Data Scientist</h3>
+                            </div>
+                            <p>Extract insights from complex data using statistical methods</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Statistics, Machine Learning, Python
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $120,000</span>
+                                    <span class="growth">📈 31% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="technology">
+                        <div class="path-image" style="background-color: #4cc9f0;">
+                            💻 Technology
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Cybersecurity Analyst</h3>
+                            </div>
+                            <p>Protect systems and networks from digital threats</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Network Security, Risk Assessment, Incident Response
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $102,000</span>
+                                    <span class="growth">📈 33% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="technology">
+                        <div class="path-image" style="background-color: #4cc9f0;">
+                            💻 Technology
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>UX/UI Designer</h3>
+                            </div>
+                            <p>Design user-friendly and visually appealing digital experiences</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> User Research, Wireframing, Prototyping
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $85,000</span>
+                                    <span class="growth">📈 16% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="technology">
+                        <div class="path-image" style="background-color: #4cc9f0;">
+                            💻 Technology
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>IT Project Manager</h3>
+                            </div>
+                            <p>Lead technology projects and coordinate development teams</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Project Management, Agile, Budgeting
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $95,000</span>
+                                    <span class="growth">📈 11% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <!-- Healthcare Careers -->
+                    <div class="path-card" data-category="healthcare">
+                        <div class="path-image" style="background-color: #f72585;">
+                            🏥 Healthcare
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Registered Nurse</h3>
+                            </div>
+                            <p>Provide patient care and medical support in various settings</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Patient Care, Medical Knowledge, Communication
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $77,000</span>
+                                    <span class="growth">📈 6% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="healthcare">
+                        <div class="path-image" style="background-color: #f72585;">
+                            🏥 Healthcare
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Physical Therapist</h3>
+                            </div>
+                            <p>Help patients recover mobility and physical function</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Rehabilitation, Anatomy, Therapeutic Exercise
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $91,000</span>
+                                    <span class="growth">📈 15% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="healthcare">
+                        <div class="path-image" style="background-color: #f72585;">
+                            🏥 Healthcare
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Medical Researcher</h3>
+                            </div>
+                            <p>Conduct studies to advance medical knowledge and treatments</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Research Methods, Data Analysis, Scientific Writing
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $88,000</span>
+                                    <span class="growth">📈 8% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="healthcare">
+                        <div class="path-image" style="background-color: #f72585;">
+                            🏥 Healthcare
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Physician Assistant</h3>
+                            </div>
+                            <p>Provide healthcare services under physician supervision</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Diagnosis, Treatment, Patient Education
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $115,000</span>
+                                    <span class="growth">📈 27% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="healthcare">
+                        <div class="path-image" style="background-color: #f72585;">
+                            🏥 Healthcare
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Healthcare Administrator</h3>
+                            </div>
+                            <p>Manage healthcare facilities and coordinate medical services</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Management, Healthcare Laws, Operations
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $104,000</span>
+                                    <span class="growth">📈 28% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <!-- Business Careers -->
+                    <div class="path-card" data-category="business">
+                        <div class="path-image" style="background-color: #7209b7;">
+                            💼 Business
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Marketing Manager</h3>
+                            </div>
+                            <p>Develop strategies to promote products and build brands</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Digital Marketing, Strategy, Analytics
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $135,000</span>
+                                    <span class="growth">📈 10% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="business">
+                        <div class="path-image" style="background-color: #7209b7;">
+                            💼 Business
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Financial Analyst</h3>
+                            </div>
+                            <p>Analyze financial data to guide business decisions</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Financial Modeling, Excel, Data Analysis
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $81,000</span>
+                                    <span class="growth">📈 9% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="business">
+                        <div class="path-image" style="background-color: #7209b7;">
+                            💼 Business
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>HR Specialist</h3>
+                            </div>
+                            <p>Manage employee relations, recruitment, and development</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Recruitment, Employee Relations, Compliance
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $62,000</span>
+                                    <span class="growth">📈 8% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="business">
+                        <div class="path-image" style="background-color: #7209b7;">
+                            💼 Business
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Management Consultant</h3>
+                            </div>
+                            <p>Advise organizations on business strategy and operations</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Problem Solving, Analysis, Communication
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $86,000</span>
+                                    <span class="growth">📈 14% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="business">
+                        <div class="path-image" style="background-color: #7209b7;">
+                            💼 Business
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Sales Manager</h3>
+                            </div>
+                            <p>Lead sales teams and develop revenue strategies</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Sales, Leadership, Strategy
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $130,000</span>
+                                    <span class="growth">📈 5% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <!-- Creative Careers -->
+                    <div class="path-card" data-category="creative">
+                        <div class="path-image" style="background-color: #ff9e00;">
+                            🎨 Creative
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Graphic Designer</h3>
+                            </div>
+                            <p>Create visual content for various media and platforms</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Adobe Creative Suite, Typography, Branding
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $53,000</span>
+                                    <span class="growth">📈 3% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="creative">
+                        <div class="path-image" style="background-color: #ff9e00;">
+                            🎨 Creative
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Content Strategist</h3>
+                            </div>
+                            <p>Plan and create engaging content across multiple channels</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Content Creation, SEO, Social Media
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $74,000</span>
+                                    <span class="growth">📈 12% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="creative">
+                        <div class="path-image" style="background-color: #ff9e00;">
+                            🎨 Creative
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Video Producer</h3>
+                            </div>
+                            <p>Create and edit video content for various purposes</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Video Editing, Storytelling, Production
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $65,000</span>
+                                    <span class="growth">📈 12% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="creative">
+                        <div class="path-image" style="background-color: #ff9e00;">
+                            🎨 Creative
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Art Director</h3>
+                            </div>
+                            <p>Oversee visual style and creative direction for projects</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Creative Direction, Design, Team Management
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $100,000</span>
+                                    <span class="growth">📈 4% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="creative">
+                        <div class="path-image" style="background-color: #ff9e00;">
+                            🎨 Creative
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>UX Designer</h3>
+                            </div>
+                            <p>Design user-friendly digital experiences and interfaces</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> User Research, Wireframing, Prototyping
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $97,000</span>
+                                    <span class="growth">📈 16% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <!-- Education Careers -->
+                    <div class="path-card" data-category="education">
+                        <div class="path-image" style="background-color: #3a0ca3;">
+                            📚 Education
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Teacher</h3>
+                            </div>
+                            <p>Educate and inspire students in various subjects</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Curriculum Development, Classroom Management, Instruction
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $61,000</span>
+                                    <span class="growth">📈 4% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="education">
+                        <div class="path-image" style="background-color: #3a0ca3;">
+                            📚 Education
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>School Counselor</h3>
+                            </div>
+                            <p>Support student development and academic success</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Counseling, Student Development, Crisis Management
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $58,000</span>
+                                    <span class="growth">📈 8% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="education">
+                        <div class="path-image" style="background-color: #3a0ca3;">
+                            📚 Education
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Education Administrator</h3>
+                            </div>
+                            <p>Lead educational institutions and academic programs</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Leadership, Budget Management, Policy
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $98,000</span>
+                                    <span class="growth">📈 4% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="education">
+                        <div class="path-image" style="background-color: #3a0ca3;">
+                            📚 Education
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Curriculum Developer</h3>
+                            </div>
+                            <p>Design educational programs and learning materials</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Instructional Design, Assessment, Research
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $67,000</span>
+                                    <span class="growth">📈 6% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="education">
+                        <div class="path-image" style="background-color: #3a0ca3;">
+                            📚 Education
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Special Education Teacher</h3>
+                            </div>
+                            <p>Work with students with special needs and disabilities</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Special Education, Individualized Planning, Patience
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $61,000</span>
+                                    <span class="growth">📈 8% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <!-- Engineering Careers -->
+                    <div class="path-card" data-category="engineering">
+                        <div class="path-image" style="background-color: #2ec4b6;">
+                            ⚙️ Engineering
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Mechanical Engineer</h3>
+                            </div>
+                            <p>Design and develop mechanical systems and devices</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> CAD, Thermodynamics, Mechanical Design
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $90,000</span>
+                                    <span class="growth">📈 4% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="engineering">
+                        <div class="path-image" style="background-color: #2ec4b6;">
+                            ⚙️ Engineering
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Civil Engineer</h3>
+                            </div>
+                            <p>Plan and oversee construction and infrastructure projects</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Structural Design, Project Management, AutoCAD
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $88,000</span>
+                                    <span class="growth">📈 5% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="engineering">
+                        <div class="path-image" style="background-color: #2ec4b6;">
+                            ⚙️ Engineering
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Electrical Engineer</h3>
+                            </div>
+                            <p>Design electrical systems, circuits, and components</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Circuit Design, Power Systems, Electronics
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $101,000</span>
+                                    <span class="growth">📈 3% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="engineering">
+                        <div class="path-image" style="background-color: #2ec4b6;">
+                            ⚙️ Engineering
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Environmental Engineer</h3>
+                            </div>
+                            <p>Develop solutions to environmental challenges</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Environmental Science, Regulations, Problem Solving
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $92,000</span>
+                                    <span class="growth">📈 4% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+
+                    <div class="path-card" data-category="engineering">
+                        <div class="path-image" style="background-color: #2ec4b6;">
+                            ⚙️ Engineering
+                        </div>
+                        <div class="path-content">
+                            <div class="career-header">
+                                <h3>Biomedical Engineer</h3>
+                            </div>
+                            <p>Combine engineering principles with medical science</p>
+                            <div class="career-details">
+                                <div class="career-skill">
+                                    <strong>Key Skills:</strong> Biology, Medical Devices, Research
+                                </div>
+                                <div class="career-metrics">
+                                    <span class="salary">💰 $92,000</span>
+                                    <span class="growth">📈 6% growth</span>
+                                </div>
+                            </div>
+                            <button class="btn save-career-btn">Save Career</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="container">
+                <h2>Ready to Discover Your Career Path?</h2>
+                <p>Join thousands of users who found their perfect career match</p>
+                <a href="#quiz" class="btn" style="background-color: white; color: var(--primary);">Start Your Assessment</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>NewGen Advisory</h3>
+                    <p>Your comprehensive career guidance platform helping individuals discover their ideal career paths.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#careers">Career Paths</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Career Guides</a></li>
+                        <li><a href="#">Skill Development</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:info@newgenadvisory.com">info@newgenadvisory.com</a></li>
+                        <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 NewGen Advisory. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/auth.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/results.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
